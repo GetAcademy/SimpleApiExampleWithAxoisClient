@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <button onclick="getData()">Get all</button><br />
+    Id: <input type="number" id="numberInput" />
+    <button onclick="getData(document.getElementById('numberInput).value))">Get one</button><br />
+    <div id="output"></div>
+    <div id="rawOutput"></div>
+    <script>
+        function getData(id) {
+            var rawOutput = document.getElementById('rawOutput');
+            var output = document.getElementById('output');
+            rawOutput.innerText = '';
+            output.innerText = '';
+            let url = 'https://localhost:44328/api/people';
+            if (id) url += '/' + id;
+            axios.get(url)
+                .then(function (response) {
+                    //rawOutput.innerText = JSON.stringify(response);
+                    let people = response.data;
+                    for (let person of people) {
+                        output.innerHTML += `<h3>${person.name}</h3>
+                                    ${person.birthDate} 
+                                    ${person.isMale ? 'Mann' : 'Kvinne' } 
+                                    `;
+                    }
+                })
+                .catch(function (error) {
+                    rawOutput.innerText = JSON.stringify(error);
+                });
+        }
+    </script>
+</body>
+</html>
